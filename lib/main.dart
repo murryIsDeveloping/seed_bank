@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           secondaryHeaderColor: pallette.secondary,
           buttonColor: pallette.primary,
           backgroundColor: pallette.primary,
-          primarySwatch: Colors.green,
+          primarySwatch: swatch,
           bannerTheme: MaterialBannerThemeData(
             backgroundColor: pallette.primary,
           ),
