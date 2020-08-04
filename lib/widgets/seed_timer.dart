@@ -48,11 +48,11 @@ class SeedTimer extends StatelessWidget {
           height: 5,
         ),
         Text(
-          DateFormat("dd MMM yyyy").format(
+          "Expiry: ${DateFormat("dd MMM yyyy").format(
             date.add(
               Duration(days: 5 * 365),
             ),
-          ),
+          )}",
           style: TextStyle(
             color: Colors.grey,
             fontSize: 13,
