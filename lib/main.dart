@@ -1,10 +1,13 @@
-import 'package:MySeedBank/providers/seeds_provider.dart';
-import 'package:MySeedBank/screens/add_seeds_screen.dart';
-import 'package:MySeedBank/screens/seed_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './screens/seed_list_screen.dart';
+import './screens/add_seeds_screen.dart';
+import './screens/seed_detail_screen.dart';
+import './screens/settings_screen.dart';
+
+import './providers/seeds_provider.dart';
+
 import './styles/colors.dart';
 
 void main() {
@@ -52,6 +55,7 @@ class MyApp extends StatelessWidget {
           SeedListScreen.routeName: (ctx) => SeedListScreen(),
           AddSeedsScreen.routeName: (ctx) => AddSeedsScreen(),
           SeedDetailScreen.routeName: (ctx) => SeedDetailScreen(),
+          SettingsScreen.routeName: (ctx) => SettingsScreen(),
         },
       ),
     );

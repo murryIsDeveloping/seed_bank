@@ -1,5 +1,6 @@
 import 'package:MySeedBank/screens/add_seeds_screen.dart';
 import 'package:MySeedBank/screens/seed_list_screen.dart';
+import 'package:MySeedBank/screens/settings_screen.dart';
 import 'package:MySeedBank/styles/custom_icons.dart';
 import 'package:MySeedBank/widgets/drawer_item.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,11 @@ class MainDrawer extends StatelessWidget {
             icon: Icons.add,
             title: "Add Seed",
             routeName: AddSeedsScreen.routeName,
+          ),
+          DrawerItem(
+            icon: Icons.settings,
+            title: "Settings",
+            routeName: SettingsScreen.routeName,
           ),
         ],
       ),
