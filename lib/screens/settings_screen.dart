@@ -1,18 +1,6 @@
 import 'package:MySeedBank/main_drawer.dart';
+import 'package:MySeedBank/models/user_preferences.dart';
 import 'package:flutter/material.dart';
-
-enum Region {
-  Subtropical,
-  Tropical,
-  Arid,
-  Temperate,
-  Cool,
-}
-
-enum Hemisphere {
-  Northern,
-  Southern,
-}
 
 class SettingsScreen extends StatefulWidget {
   static const routeName = "/settings";
@@ -22,8 +10,9 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  Region _region = Region.Tropical;
+  Climate _climate = Climate.Tropical;
   Hemisphere _hemisphere = Hemisphere.Southern;
+  Storage _storage = Storage.Box;
 
   Widget _headingBuilder(String title) {
     return Container(
@@ -46,40 +35,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _regionTile(Region regionType) {
-    String name = regionType.toString().split('.')[1];
-    return ListTile(
-      title: Text(name),
-      leading: Radio(
-        groupValue: _region,
-        value: regionType,
-        onChanged: (Region region) {
-          setState(() {
-            _region = region;
-          });
-        },
-      ),
-    );
-  }
-
-  Widget _hemisphereTile(Hemisphere hemisphereType) {
-    String name = hemisphereType.toString().split('.')[1];
-    return ListTile(
-      title: Text(name),
-      leading: Radio(
-        groupValue: _hemisphere,
-        value: hemisphereType,
-        onChanged: (Hemisphere hemisphere) {
-          setState(() {
-            _hemisphere = hemisphere;
-          });
-        },
-      ),
-    );
+  Widget Function(T) _tileFunctionBuilder<T>(
+      T controller, Function(T) onChanged) {
+    return (T type) {
+      return ListTile(
+        title: Text(UserPreferences.enumToString(type)),
+        leading: Radio(
+          groupValue: controller,
+          value: type,
+          onChanged: (T val) {
+            setState(() {
+              onChanged(val);
+            });
+          },
+        ),
+      );
+    };
   }
 
   @override
   Widget build(BuildContext context) {
+    var _hemisphereBuilder =
+        _tileFunctionBuilder<Hemisphere>(_hemisphere, (val) {
+      _hemisphere = val;
+    });
+
+    var _climateBuilder = _tileFunctionBuilder<Climate>(_climate, (val) {
+      _climate = val;
+    });
+
+    var _storageBuilder = _tileFunctionBuilder<Storage>(_storage, (val) {
+      _storage = val;
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -90,14 +78,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _headingBuilder("Your Hemisphere"),
-          _hemisphereTile(Hemisphere.Northern),
-          _hemisphereTile(Hemisphere.Southern),
+          _hemisphereBuilder(Hemisphere.Northern),
+          _hemisphereBuilder(Hemisphere.Southern),
           _headingBuilder("Your Climate"),
-          _regionTile(Region.Tropical),
-          _regionTile(Region.Subtropical),
-          _regionTile(Region.Arid),
-          _regionTile(Region.Temperate),
-          _regionTile(Region.Cool),
+          _climateBuilder(Climate.Tropical),
+          _climateBuilder(Climate.Subtropical),
+          _climateBuilder(Climate.Arid),
+          _climateBuilder(Climate.Temperate),
+          _climateBuilder(Climate.Cool),
+          _headingBuilder("Storage"),
+          _storageBuilder(Storage.Box),
+          _storageBuilder(Storage.AirTightContainer),
+          _storageBuilder(Storage.Fridge),
         ],
       )),
     );
