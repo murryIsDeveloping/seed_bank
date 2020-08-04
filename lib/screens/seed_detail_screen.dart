@@ -1,6 +1,7 @@
 import 'package:MySeedBank/providers/seeds_provider.dart';
 import 'package:MySeedBank/screens/add_seeds_screen.dart';
 import 'package:MySeedBank/screens/seed_list_screen.dart';
+import 'package:MySeedBank/styles/custom_icons.dart';
 import 'package:MySeedBank/widgets/seed_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +13,7 @@ class SeedDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context).settings.arguments as int;
-    final dateFormatter = DateFormat("dd MMM YYYY");
+    final dateFormatter = DateFormat("dd MMM yyyy");
     final seed =
         Provider.of<SeedsProvider>(context, listen: false).seedById(id);
 
@@ -72,16 +73,63 @@ class SeedDetailScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: seed != null
-            ? Column(
-                children: <Widget>[
-                  Text("Seed Number: ${seed.idToString()}"),
-                  Text("Quantity: ${seed.quantity}"),
-                  Text(
-                      "Date Packaged: ${dateFormatter.format(seed.datePacked)}"),
-                  SeedTimer(
-                    date: seed.datePacked,
-                  ),
-                ],
+            ? Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              CustomIcons.leaf,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "\" ${seed.idToString()} \"",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "x ${seed.quantity} ${seed.units}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Collected: ${dateFormatter.format(seed.datePacked)}",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        SeedTimer(date: seed.datePacked),
+                      ],
+                    ),
+                  ],
+                ),
               )
             : Container(),
       ),

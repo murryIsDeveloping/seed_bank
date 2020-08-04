@@ -197,7 +197,7 @@ class _AddSeedsScreenState extends State<AddSeedsScreen> {
                           _editing ? updateSeed() : addSeed();
                         },
                         child: Text(
-                          'Submit',
+                          _editing ? "Update" : "Add",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
