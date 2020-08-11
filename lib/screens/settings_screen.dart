@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:MySeedBank/main_drawer.dart';
 import 'package:MySeedBank/models/user_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const routeName = "/settings";
@@ -13,6 +16,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Climate _climate = Climate.Tropical;
   Hemisphere _hemisphere = Hemisphere.Southern;
   Storage _storage = Storage.Box;
+
+  @override
+  initState() {
+    super.initState();
+    getLocation();
+  }
 
   Widget _headingBuilder(String title) {
     return Container(
@@ -51,6 +60,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       );
     };
+  }
+
+  getLocation() async {
+    var geolocator = Geolocator();
+    var locationOptions =
+        LocationOptions(accuracy: LocationAccuracy.low, distanceFilter: 10);
+
+    var position = await geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+        locationPermissionLevel: GeolocationPermission.location);
+
+    if (position == null) {
+      return;
+    }
+
+    setState(() {
+      _hemisphere =
+          position.latitude > 0 ? Hemisphere.Northern : Hemisphere.Southern;
+
+      print(_hemisphere);
+    });
   }
 
   @override
