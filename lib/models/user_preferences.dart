@@ -45,7 +45,7 @@ class UserPreferences implements DBItem {
     };
   }
 
-  static fromRow(Map<String, dynamic> data) {
+  static UserPreferences fromRow(Map<String, dynamic> data) {
     Storage storage;
     Climate climate;
     Hemisphere hemisphere;

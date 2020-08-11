@@ -1,3 +1,4 @@
+import 'package:MySeedBank/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,16 @@ import './providers/seeds_provider.dart';
 import './styles/colors.dart';
 
 void main() {
-  runApp(MyApp());
+  Provider.debugCheckInvalidValueType = null;
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<SeedsProvider>(create: (context) => SeedsProvider()),
+        Provider<UserProvider>(create: (context) => UserProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,45 +29,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: SeedsProvider(),
-      child: MaterialApp(
-        title: 'My Seed Bank',
-        theme: ThemeData(
-          primaryColor: pallette.primary,
-          accentColor: pallette.accent,
-          secondaryHeaderColor: pallette.secondary,
-          buttonColor: pallette.primary,
+    return MaterialApp(
+      title: 'My Seed Bank',
+      theme: ThemeData(
+        primaryColor: pallette.primary,
+        accentColor: pallette.accent,
+        secondaryHeaderColor: pallette.secondary,
+        buttonColor: pallette.primary,
+        backgroundColor: pallette.primary,
+        primarySwatch: swatch,
+        bannerTheme: MaterialBannerThemeData(
           backgroundColor: pallette.primary,
-          primarySwatch: swatch,
-          bannerTheme: MaterialBannerThemeData(
-            backgroundColor: pallette.primary,
-          ),
-          canvasColor: Colors.white,
-          dialogTheme: DialogTheme(
-            backgroundColor: Colors.white,
-          ),
-          appBarTheme: AppBarTheme(
-            color: pallette.primary,
-            elevation: 4,
-          ),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          textTheme: TextTheme(
-            headline1: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Colors.white,
-            ),
+        ),
+        canvasColor: Colors.white,
+        dialogTheme: DialogTheme(
+          backgroundColor: Colors.white,
+        ),
+        appBarTheme: AppBarTheme(
+          color: pallette.primary,
+          elevation: 4,
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: TextTheme(
+          headline1: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Colors.white,
           ),
         ),
-        initialRoute: SeedListScreen.routeName,
-        routes: {
-          SeedListScreen.routeName: (ctx) => SeedListScreen(),
-          AddSeedsScreen.routeName: (ctx) => AddSeedsScreen(),
-          SeedDetailScreen.routeName: (ctx) => SeedDetailScreen(),
-          SettingsScreen.routeName: (ctx) => SettingsScreen(),
-        },
       ),
+      initialRoute: SeedListScreen.routeName,
+      routes: {
+        SeedListScreen.routeName: (ctx) => SeedListScreen(),
+        AddSeedsScreen.routeName: (ctx) => AddSeedsScreen(),
+        SeedDetailScreen.routeName: (ctx) => SeedDetailScreen(),
+        SettingsScreen.routeName: (ctx) => SettingsScreen(),
+      },
     );
   }
 }

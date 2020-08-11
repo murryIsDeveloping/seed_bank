@@ -5,10 +5,12 @@ import 'package:path/path.dart' as path;
 class DB {
   static Future<Database> connect() async {
     final dbPath = await getDatabasesPath();
-    return openDatabase(path.join(dbPath, 'places.db'),
-        onCreate: (db, _) async {
+    return openDatabase(path.join(dbPath, 'seeds.db'), onCreate: (db, _) async {
       await db.execute(
         'CREATE TABLE seeds (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, quantity INTEGER, units INTEGER, datePacked TEXT)',
+      );
+      await db.execute(
+        'CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT, storage TEXT, hemisphere TEXT, climate TEXT)',
       );
     }, version: 1);
   }
@@ -28,6 +30,13 @@ class DB {
   static Future<List<Map<String, dynamic>>> getRecords<T>(String table) async {
     var db = await DB.connect();
     return db.query(table);
+  }
+
+  static Future<Map<String, dynamic>> getRecordById<T>(
+      String table, int id) async {
+    var db = await DB.connect();
+    var data = await db.query(table, where: "id = $id");
+    return data.length > 0 ? data[0] : null;
   }
 
   static Future<void> deleteRecord(int id, String table) async {
