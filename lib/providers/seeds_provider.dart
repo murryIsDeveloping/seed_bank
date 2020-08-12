@@ -17,6 +17,7 @@ class SeedsProvider with ChangeNotifier {
             title: data["title"],
             quantity: data["quantity"],
             id: data["id"],
+            plantId: data["plantId"],
             units: data["units"],
             datePacked: DateTime.parse(data["datePacked"]),
           ),

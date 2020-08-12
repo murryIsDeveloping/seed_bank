@@ -71,41 +71,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: Text("Settings"),
       ),
       drawer: MainDrawer(),
-      body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: Provider.of<UserProvider>(context, listen: false)
-              .getUserPreferences(),
-          initialData: null,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+      body: FutureBuilder(
+        future: Provider.of<UserProvider>(context, listen: false)
+            .getUserPreferences(),
+        initialData: null,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          var userPreferences =
+              Provider.of<UserProvider>(context).userPreferences;
+
+          if (userPreferences == null) {
+            return Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                ),
+              ),
+            );
+          } else {
             var userPreferences =
                 Provider.of<UserProvider>(context).userPreferences;
 
-            if (userPreferences == null) {
-              return CircularProgressIndicator();
-            } else {
-              var userPreferences =
-                  Provider.of<UserProvider>(context).userPreferences;
+            _hemisphere = userPreferences.hemisphere;
+            _climate = userPreferences.climate;
+            _storage = userPreferences.storage;
 
-              _hemisphere = userPreferences.hemisphere;
-              _climate = userPreferences.climate;
-              _storage = userPreferences.storage;
+            var _hemisphereBuilder = _tileFunctionBuilder<Hemisphere>(
+                userPreferences.hemisphere, (val) {
+              _hemisphere = val;
+            });
 
-              var _hemisphereBuilder = _tileFunctionBuilder<Hemisphere>(
-                  userPreferences.hemisphere, (val) {
-                _hemisphere = val;
-              });
+            var _climateBuilder =
+                _tileFunctionBuilder<Climate>(userPreferences.climate, (val) {
+              _climate = val;
+            });
 
-              var _climateBuilder =
-                  _tileFunctionBuilder<Climate>(userPreferences.climate, (val) {
-                _climate = val;
-              });
+            var _storageBuilder =
+                _tileFunctionBuilder<Storage>(userPreferences.storage, (val) {
+              _storage = val;
+            });
 
-              var _storageBuilder =
-                  _tileFunctionBuilder<Storage>(userPreferences.storage, (val) {
-                _storage = val;
-              });
-
-              return Column(
+            return SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   _headingBuilder("Your Hemisphere"),
@@ -122,10 +130,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _storageBuilder(Storage.AirTightContainer),
                   _storageBuilder(Storage.Fridge),
                 ],
-              );
-            }
-          },
-        ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

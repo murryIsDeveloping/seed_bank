@@ -1,3 +1,4 @@
+import 'package:MySeedBank/providers/seed_data_provider.dart';
 import 'package:MySeedBank/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ void main() {
       providers: [
         Provider<SeedsProvider>(create: (context) => SeedsProvider()),
         Provider<UserProvider>(create: (context) => UserProvider()),
+        Provider<PlantDataProvider>(create: (context) => PlantDataProvider()),
       ],
       child: MyApp(),
     ),

@@ -4,14 +4,17 @@ import 'package:path/path.dart' as path;
 
 class DB {
   static Future<Database> connect() async {
-    final dbPath = await getDatabasesPath();
-    return openDatabase(path.join(dbPath, 'seeds.db'), onCreate: (db, _) async {
-      await db.execute(
-        'CREATE TABLE seeds (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, quantity INTEGER, units INTEGER, datePacked TEXT)',
-      );
-      await db.execute(
-        'CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT, storage TEXT, hemisphere TEXT, climate TEXT)',
-      );
+    final dbDir = await getDatabasesPath();
+    final dbPath = path.join(dbDir, 'seeds.db');
+
+    // reset current database
+    // await deleteDatabase(dbPath);
+
+    return openDatabase(dbPath, onCreate: (db, version) {
+      db.execute(
+          "CREATE TABLE IF NOT EXISTS seeds (id INTEGER PRIMARY KEY AUTOINCREMENT, plantId INTEGER, title TEXT, quantity INTEGER, units INTEGER, datePacked TEXT)");
+      db.execute(
+          "CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, storage TEXT, hemisphere TEXT, climate TEXT)");
     }, version: 1);
   }
 

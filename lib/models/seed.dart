@@ -2,6 +2,7 @@ import './db_item.dart';
 
 class Seed implements DBItem {
   int id;
+  int plantId;
   String title;
   int quantity;
   String units;
@@ -9,6 +10,7 @@ class Seed implements DBItem {
 
   Seed({
     this.id,
+    this.plantId,
     this.title,
     this.quantity,
     this.units,
@@ -20,7 +22,8 @@ class Seed implements DBItem {
       "title": title,
       "quantity": quantity.toString(),
       "units": units,
-      "datePacked": datePacked.toString()
+      "datePacked": datePacked.toString(),
+      "plantId": plantId,
     };
   }
 
